@@ -23,11 +23,13 @@ class Signup extends StatefulWidget {
 
 class _SignupState extends State<Signup> {
   late bool _passwordVisible;
+  late bool _confirmPasswordVisible;
 
   @override
   void initState() {
     super.initState();
     _passwordVisible = true;
+    _confirmPasswordVisible = true;
   }
 
   @override
@@ -87,7 +89,7 @@ class _SignupState extends State<Signup> {
                     SizedBox(height: 24),
                     TextFieldInput(
                       controller: widget.passwordController,
-                      ispassword: true,
+                      ispassword: !_passwordVisible,
                       hintText: 'Password',
                       keyboardType: TextInputType.visiblePassword,
                       suffixIcon: IconButton(
@@ -107,18 +109,18 @@ class _SignupState extends State<Signup> {
                     SizedBox(height: 24),
                     TextFieldInput(
                       controller: widget.passwordConfirmController,
-                      ispassword: true,
+                      ispassword: !_confirmPasswordVisible,
                       hintText: 'Confirm Password',
                       keyboardType: TextInputType.visiblePassword,
                       suffixIcon: IconButton(
                         alignment: Alignment.bottomLeft,
                         onPressed: () {
                           setState(() {
-                            _passwordVisible = !_passwordVisible;
+                            _confirmPasswordVisible = !_confirmPasswordVisible;
                           });
                         },
                         icon: Icon(
-                          _passwordVisible
+                          _confirmPasswordVisible
                               ? Icons.visibility
                               : Icons.visibility_off,
                         ),
