@@ -1,27 +1,52 @@
 import 'package:flutter/material.dart';
 
-class CustomTextField extends StatelessWidget {
+class TextFieldInput extends StatelessWidget {
   final TextEditingController controller;
+  final bool ispassword;
   final String hintText;
-  final bool obscureText;
+  final Widget? suffixIcon;
+  final TextInputType keyboardType;
 
-  const CustomTextField({
+  const TextFieldInput({
     super.key,
     required this.controller,
+    required this.ispassword,
     required this.hintText,
-    this.obscureText = false,
+    this.suffixIcon,
+    required this.keyboardType,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      keyboardType: keyboardType,
       controller: controller,
-      obscureText: obscureText,
+      cursorColor: const Color.fromARGB(218, 226, 37, 24),
+      obscureText: ispassword,
+      textInputAction: TextInputAction.next,
       decoration: InputDecoration(
         hintText: hintText,
-        border: const OutlineInputBorder(),
         filled: true,
-        fillColor: Colors.grey[100],
+        contentPadding: const EdgeInsets.all(8),
+        suffixIcon: suffixIcon,
+        border: OutlineInputBorder(
+          borderSide: const BorderSide(
+            color: Colors.transparent,
+            style: BorderStyle.none,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(
+            color: Colors.transparent,
+            style: BorderStyle.none,
+          ),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(
+            color: Colors.transparent,
+            style: BorderStyle.none,
+          ),
+        ),
       ),
     );
   }
