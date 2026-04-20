@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-Future main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+void main() {
   runApp(const MyApp());
 }
 
@@ -11,7 +10,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(body: Center(child: const Text('Hello World how are you ?'))),
+      home: Scaffold(
+        body: Center(child: const Text('Hello World how are you ?')),
+      ),
     );
   }
 }
