@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/text_field.dart';
 import 'login_screen.dart';
+import '../methods/auth_method.dart';
 
 class Signup extends StatefulWidget {
   final TextEditingController emailController;
@@ -138,7 +139,27 @@ class _SignupState extends State<Signup> {
                             ),
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () async {
+                          if (widget.passwordController.text !=
+                              widget.passwordConfirmController.text) {
+                            if (mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Passwords do not match')),
+                              );
+                            }
+                            return;
+                          }
+                          final result = await AuthMethode().signUpUser(
+                            email: widget.emailController.text,
+                            username: widget.usernameController.text,
+                            password: widget.passwordController.text,
+                          );
+                          if (mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(result == 'success' ? 'Sign up successful' : result)),
+                            );
+                          }
+                        },
                         child: Text(
                           'Sign up',
                           style: TextStyle(color: Colors.white),

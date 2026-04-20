@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import '../widgets/text_field.dart';
+import '../methods/auth_method.dart';
 import 'signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   final TextEditingController emailController;
   final TextEditingController passwordController;
+
+
 
   const LoginScreen({
     super.key,
@@ -93,7 +96,17 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () async {
+                          final result = await AuthMethode().login(
+                            email: widget.emailController.text,
+                            password: widget.passwordController.text,
+                          );
+                          if (mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(result == 'success' ? 'Login' : result)),
+                            );
+                          }
+                        },
                         child: Text(
                           'Log in',
                           style: TextStyle(color: Colors.white),
