@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:holbegram/screens/login_screen.dart';
+import 'package:holbegram/screens/signup_screen.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,11 +15,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
+    final passwordConfirmController = TextEditingController();
+    final usernameController = TextEditingController();
 
     return MaterialApp(
-      home: LoginScreen(
+      home: Signup(
         emailController: emailController,
+        usernameController: usernameController,
         passwordController: passwordController,
+        passwordConfirmController: passwordConfirmController,
       ),
     );
   }
