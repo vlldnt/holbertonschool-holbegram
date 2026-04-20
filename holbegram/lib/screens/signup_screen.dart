@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/text_field.dart';
+import 'login_screen.dart';
 
 class Signup extends StatefulWidget {
   final TextEditingController emailController;
@@ -155,10 +156,18 @@ class _SignupState extends State<Signup> {
                           SizedBox(width: 4),
                           TextButton(
                             onPressed: () {
-
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => LoginScreen(
+                                    emailController: TextEditingController(),
+                                    passwordController: TextEditingController(),
+                                  ),
+                                ),
+                              );
                             },
                             child: Text(
-                              'Sign up',
+                              'Log in',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Color.fromARGB(218, 226, 37, 24),
