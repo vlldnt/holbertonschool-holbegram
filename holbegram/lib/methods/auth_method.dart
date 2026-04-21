@@ -49,9 +49,7 @@ class AuthMethode {
         saved: [],
         searchKey: username[0],
       );
-      print('Saving user to Firestore: ${users.uid}');
       await _firestore.collection('users').doc(user.uid).set(users.toJson());
-      print('User saved successfully to Firestore');
       return 'success';
     } catch (error) {
       return error.toString();

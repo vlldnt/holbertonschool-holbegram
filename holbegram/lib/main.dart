@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:holbegram/screens/signup_screen.dart';
+import 'package:holbegram/screens/upload_image_screen.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,17 +13,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final emailController = TextEditingController();
-    final passwordController = TextEditingController();
-    final passwordConfirmController = TextEditingController();
-    final usernameController = TextEditingController();
-
     return MaterialApp(
-      home: Signup(
-        emailController: emailController,
-        usernameController: usernameController,
-        passwordController: passwordController,
-        passwordConfirmController: passwordConfirmController,
+      home: AddPicture(
+        email: 'test@example.com',
+        password: 'password123',
+        username: 'testuser',
       ),
     );
   }
