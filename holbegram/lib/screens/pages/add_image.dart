@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import '../../methods/auth_method.dart';
 import '../../providers/user_provider.dart';
 import 'methods/post_storage.dart';
 

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 import '../models/post.dart';
-import '../providers/user_provider.dart';
 import '../screens/pages/methods/post_storage.dart';
 import '../screens/pages/methods/favorites_service.dart';
 

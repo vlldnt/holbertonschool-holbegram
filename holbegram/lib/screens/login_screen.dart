@@ -4,7 +4,6 @@ import '../widgets/text_field.dart';
 import '../methods/auth_method.dart';
 import '../providers/user_provider.dart';
 import 'signup_screen.dart';
-import 'home.dart';
 
 class LoginScreen extends StatefulWidget {
   final TextEditingController emailController;
