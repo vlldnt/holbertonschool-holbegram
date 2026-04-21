@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../methods/auth_method.dart';
 
 class AddPicture extends StatefulWidget {
   final String email;
@@ -80,7 +81,7 @@ class _AddPictureState extends State<AddPicture> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Hello, John Doe Welcome to Holbergram.',
+                      'Hello, ${widget.username} Welcome to Holbergram.',
                       style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 4),
@@ -131,7 +132,19 @@ class _AddPictureState extends State<AddPicture> {
               child: SizedBox(
                 width: 100,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    final result = await AuthMethode().signUpUser(
+                      email: widget.email,
+                      username: widget.username,
+                      password: widget.password,
+                      file: _image,
+                    );
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(result == 'success' ? 'Sign up successful' : result)),
+                      );
+                    }
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red,
                     shape: RoundedRectangleBorder(
