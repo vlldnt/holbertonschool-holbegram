@@ -21,7 +21,10 @@ class _ProfileState extends State<Profile> {
   }
 
   Future<void> addData() async {
-    UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
+    UserProvider userProvider = Provider.of<UserProvider>(
+      context,
+      listen: false,
+    );
     await userProvider.refreshUser();
   }
 
@@ -46,10 +49,9 @@ class _ProfileState extends State<Profile> {
             onPressed: () async {
               await AuthMethode().logOut();
               if (context.mounted) {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                  '/login',
-                  (route) => false,
-                );
+                Navigator.of(
+                  context,
+                ).pushNamedAndRemoveUntil('/login', (route) => false);
               }
             },
           ),
@@ -66,72 +68,72 @@ class _ProfileState extends State<Profile> {
                 Container(
                   color: Colors.white,
                   padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Row(
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           CircleAvatar(
                             radius: 50,
                             backgroundColor: Colors.grey[300],
-                            backgroundImage: user.photoUrl.isNotEmpty && user.photoUrl.startsWith('http')
+                            backgroundImage:
+                                user.photoUrl.isNotEmpty &&
+                                    user.photoUrl.startsWith('http')
                                 ? NetworkImage(user.photoUrl)
                                 : null,
-                            child: user.photoUrl.isEmpty || !user.photoUrl.startsWith('http')
-                                ? const Icon(Icons.person, size: 50, color: Colors.grey)
+                            child:
+                                user.photoUrl.isEmpty ||
+                                    !user.photoUrl.startsWith('http')
+                                ? const Icon(
+                                    Icons.person,
+                                    size: 50,
+                                    color: Colors.grey,
+                                  )
                                 : null,
                           ),
-                          const SizedBox(width: 24),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  user.username,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  user.email,
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                              ],
+                          const SizedBox(height: 12),
+                          Text(
+                            user.username,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
                             ),
                           ),
+                          const SizedBox(height: 40),
                         ],
                       ),
-                      const SizedBox(height: 16),
-                      Text(
-                        user.bio.isNotEmpty ? user.bio : 'No bio yet',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: user.bio.isEmpty ? Colors.grey : Colors.black,
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            _buildStatCard(
+                              'Posts',
+                              user.posts.length.toString(),
+                            ),
+                            _buildStatCard(
+                              'Followers',
+                              user.followers.length.toString(),
+                            ),
+                            _buildStatCard(
+                              'Following',
+                              user.following.length.toString(),
+                            ),
+                          ],
                         ),
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          _buildStatCard('Posts', user.posts.length.toString()),
-                          _buildStatCard('Followers', user.followers.length.toString()),
-                          _buildStatCard('Following', user.following.length.toString()),
-                        ],
                       ),
                     ],
                   ),
                 ),
-                const Divider(height: 1),
                 const SizedBox(height: 8),
                 StreamBuilder<QuerySnapshot>(
                   stream: FirebaseFirestore.instance
                       .collection('posts')
-                      .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                      .where(
+                        'uid',
+                        isEqualTo: FirebaseAuth.instance.currentUser!.uid,
+                      )
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
@@ -154,7 +156,8 @@ class _ProfileState extends State<Profile> {
                         child: Center(
                           child: Text(
                             'No posts yet',
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey),
+                            style: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(color: Colors.grey),
                           ),
                         ),
                       );
@@ -163,8 +166,12 @@ class _ProfileState extends State<Profile> {
                     final posts = snapshot.data!.docs;
                     final sortedDocs = posts.toList()
                       ..sort((a, b) {
-                        final dateA = (a['datePublished'] as Timestamp?)?.toDate() ?? DateTime(1970);
-                        final dateB = (b['datePublished'] as Timestamp?)?.toDate() ?? DateTime(1970);
+                        final dateA =
+                            (a['datePublished'] as Timestamp?)?.toDate() ??
+                            DateTime(1970);
+                        final dateB =
+                            (b['datePublished'] as Timestamp?)?.toDate() ??
+                            DateTime(1970);
                         return dateB.compareTo(dateA);
                       });
 
@@ -173,11 +180,12 @@ class _ProfileState extends State<Profile> {
                       child: GridView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          crossAxisSpacing: 4,
-                          mainAxisSpacing: 4,
-                        ),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              crossAxisSpacing: 4,
+                              mainAxisSpacing: 4,
+                            ),
                         itemCount: sortedDocs.length,
                         itemBuilder: (context, index) {
                           final post = Post.fromSnap(sortedDocs[index]);
@@ -190,23 +198,32 @@ class _ProfileState extends State<Profile> {
                                 color: Colors.grey[200],
                               ),
                               clipBehavior: Clip.hardEdge,
-                              child: post.postUrl.isNotEmpty && post.postUrl.startsWith('http')
+                              child:
+                                  post.postUrl.isNotEmpty &&
+                                      post.postUrl.startsWith('http')
                                   ? Image.network(
                                       post.postUrl,
                                       fit: BoxFit.cover,
-                                      errorBuilder: (context, error, stackTrace) {
-                                        return Container(
-                                          color: Colors.grey[300],
-                                          child: const Center(
-                                            child: Icon(Icons.image_not_supported, size: 20),
-                                          ),
-                                        );
-                                      },
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                            return Container(
+                                              color: Colors.grey[300],
+                                              child: const Center(
+                                                child: Icon(
+                                                  Icons.image_not_supported,
+                                                  size: 20,
+                                                ),
+                                              ),
+                                            );
+                                          },
                                     )
                                   : Container(
                                       color: Colors.grey[300],
                                       child: const Center(
-                                        child: Icon(Icons.image_not_supported, size: 20),
+                                        child: Icon(
+                                          Icons.image_not_supported,
+                                          size: 20,
+                                        ),
                                       ),
                                     ),
                             ),
@@ -229,19 +246,10 @@ class _ProfileState extends State<Profile> {
       children: [
         Text(
           count,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-          ),
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
         ),
         const SizedBox(height: 4),
-        Text(
-          label,
-          style: const TextStyle(
-            color: Colors.grey,
-            fontSize: 12,
-          ),
-        ),
+        Text(label, style: const TextStyle(color: Colors.grey, fontSize: 12)),
       ],
     );
   }
