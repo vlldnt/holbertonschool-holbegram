@@ -50,7 +50,13 @@ class _PostsState extends State<Posts> {
                         children: [
                           CircleAvatar(
                             radius: 24,
-                            backgroundImage: NetworkImage(post.profImage),
+                            backgroundColor: Colors.grey[300],
+                            backgroundImage: post.profImage.isNotEmpty && post.profImage.startsWith('http')
+                                ? NetworkImage(post.profImage)
+                                : null,
+                            child: post.profImage.isEmpty || !post.profImage.startsWith('http')
+                                ? const Icon(Icons.person, color: Colors.grey)
+                                : null,
                           ),
                           const SizedBox(width: 12),
                           Expanded(
@@ -93,11 +99,27 @@ class _PostsState extends State<Posts> {
                           height: 300,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
+                            color: Colors.grey[200],
                           ),
-                          child: Image.network(
-                            post.postUrl,
-                            fit: BoxFit.cover,
-                          ),
+                          child: post.postUrl.isNotEmpty && post.postUrl.startsWith('http')
+                              ? Image.network(
+                                  post.postUrl,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Container(
+                                      color: Colors.grey[300],
+                                      child: const Center(
+                                        child: Icon(Icons.image_not_supported),
+                                      ),
+                                    );
+                                  },
+                                )
+                              : Container(
+                                  color: Colors.grey[300],
+                                  child: const Center(
+                                    child: Icon(Icons.image_not_supported),
+                                  ),
+                                ),
                         ),
                       ),
                       const SizedBox(height: 8),

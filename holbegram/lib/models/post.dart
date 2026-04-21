@@ -30,7 +30,9 @@ class Post {
       username: snapshot['username'] ?? '',
       likes: List<dynamic>.from(snapshot['likes'] ?? []),
       postId: snapshot['postId'] ?? '',
-      datePublished: (snapshot['datePublished'] as Timestamp).toDate(),
+      datePublished: snapshot['datePublished'] != null
+          ? (snapshot['datePublished'] as Timestamp).toDate()
+          : DateTime.now(),
       postUrl: snapshot['postUrl'] ?? '',
       profImage: snapshot['profImage'] ?? '',
     );

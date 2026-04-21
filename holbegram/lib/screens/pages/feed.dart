@@ -3,7 +3,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:holbegram/utils/posts.dart';
 
 class Feed extends StatelessWidget {
-  const Feed({super.key});
+  final PageController? pageController;
+
+  const Feed({super.key, this.pageController});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +39,13 @@ class Feed extends StatelessWidget {
               color: Colors.black,
               size: 20,
             ),
-            onPressed: () {},
+            onPressed: () {
+              pageController?.animateToPage(
+                2,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInBack,
+              );
+            },
           ),
           IconButton(
             icon: const Icon(

@@ -47,7 +47,13 @@ class _BottomNavState extends State<BottomNav> {
       body: PageView(
         controller: _pageController,
         physics: const NeverScrollableScrollPhysics(),
-        children: const [Feed(), Search(), AddImage(), Favorite(), Profile()],
+        children: [
+          Feed(pageController: _pageController),
+          const Search(),
+          const AddImage(),
+          const Favorite(),
+          const Profile(),
+        ],
       ),
       bottomNavigationBar: BottomNavyBar(
         selectedIndex: _currentIndex,
