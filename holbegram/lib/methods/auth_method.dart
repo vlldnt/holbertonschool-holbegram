@@ -40,7 +40,10 @@ class AuthMethode {
 
       String photoUrl = '';
       if (file != null) {
-        final uploadedUrl = await StorageMethods().uploadImageToStorage(file, 'profile_pictures');
+        final uploadedUrl = await StorageMethods().uploadImageToStorage(
+          file,
+          'profile_pictures',
+        );
         if (uploadedUrl == null) {
           return 'Failed to upload image';
         }
@@ -63,6 +66,18 @@ class AuthMethode {
       return 'success';
     } catch (error) {
       return error.toString();
+    }
+  }
+
+  Future<Users?> getUserDetails(String userId) async {
+    try {
+      final userData = await _firestore.collection('users').doc(userId).get();
+      if (!userData.exists) {
+        return null;
+      }
+      return Users.fromSnapshot(userData);
+    } catch (e) {
+      return null;
     }
   }
 }

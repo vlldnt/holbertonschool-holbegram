@@ -1,4 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Users {
   final String uid;
@@ -27,6 +28,23 @@ class Users {
 
   static Users fromSnap(DataSnapshot snap) {
     var snapshot = snap.value as Map<dynamic, dynamic>;
+
+    return Users(
+      uid: snapshot['uid'] ?? '',
+      email: snapshot['email'] ?? '',
+      username: snapshot['username'] ?? '',
+      bio: snapshot['bio'] ?? '',
+      photoUrl: snapshot['photoUrl'] ?? '',
+      followers: List<dynamic>.from(snapshot['followers'] ?? []),
+      following: List<dynamic>.from(snapshot['following'] ?? []),
+      posts: List<dynamic>.from(snapshot['posts'] ?? []),
+      saved: List<dynamic>.from(snapshot['saved'] ?? []),
+      searchKey: snapshot['searchKey'] ?? '',
+    );
+  }
+
+  static Users fromSnapshot(DocumentSnapshot snap) {
+    final snapshot = snap.data() as Map<String, dynamic>;
 
     return Users(
       uid: snapshot['uid'] ?? '',
