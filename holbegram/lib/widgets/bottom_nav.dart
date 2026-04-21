@@ -34,11 +34,7 @@ class _BottomNavState extends State<BottomNav> {
     setState(() {
       _currentIndex = index;
     });
-    _pageController.animateToPage(
-      index,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInBack,
-    );
+    _pageController.jumpToPage(index);
   }
 
   @override

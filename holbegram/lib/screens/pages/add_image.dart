@@ -106,28 +106,81 @@ class _AddImageState extends State<AddImage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
         title: const Text(
-          'New Post',
+          'Add Image',
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
             fontSize: 18,
           ),
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: GestureDetector(
+              onTap: _isLoading ? null : uploadPost,
+              child: Align(
+                alignment: Alignment.center,
+                child: Text(
+                  'Post',
+                  style: TextStyle(
+                    color: Colors.red[400],
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30,
+                    fontFamily: 'Billabong',
+                    height: 1.0,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              const Text(
+                'Add Image',
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                'Choose an image from your gallery or take a one.',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.black,
+                  fontWeight: FontWeight(600),
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 24),
+              TextField(
+                controller: _captionController,
+                maxLines: 1,
+                decoration: InputDecoration(
+                  hintText: 'Write a caption...',
+                  hintStyle: const TextStyle(color: Colors.grey, fontSize: 16),
+                  border: InputBorder.none,
+                  contentPadding: const EdgeInsets.all(0),
+                ),
+                textAlign: TextAlign.start,
+              ),
+              const SizedBox(height: 32),
               if (_image != null) ...[
                 Container(
                   width: double.infinity,
-                  height: 300,
+                  height: 350,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -137,7 +190,7 @@ class _AddImageState extends State<AddImage> {
                     fit: BoxFit.cover,
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -162,25 +215,20 @@ class _AddImageState extends State<AddImage> {
               ] else ...[
                 Container(
                   width: double.infinity,
-                  height: 300,
+                  height: 350,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
-                    color: Colors.grey[200],
+                    color: Colors.white,
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(
-                        FontAwesomeIcons.image,
-                        size: 64,
-                        color: Colors.grey,
-                      ),
-                      const SizedBox(height: 16),
-                      const Text(
-                        'No image selected',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.grey,
+                      GestureDetector(
+                        onTap: selectImageFromGallery,
+                        child: Image.asset(
+                          'assets/images/addimage.png',
+                          width: 160,
+                          height: 160,
                         ),
                       ),
                       const SizedBox(height: 24),
@@ -209,57 +257,6 @@ class _AddImageState extends State<AddImage> {
                   ),
                 ),
               ],
-              const SizedBox(height: 24),
-              const Text(
-                'Caption',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-              const SizedBox(height: 8),
-              TextField(
-                controller: _captionController,
-                maxLines: 4,
-                decoration: InputDecoration(
-                  hintText: 'Write a caption...',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  contentPadding: const EdgeInsets.all(12),
-                ),
-              ),
-              const SizedBox(height: 24),
-              SizedBox(
-                width: double.infinity,
-                height: 48,
-                child: ElevatedButton(
-                  onPressed: _isLoading ? null : uploadPost,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                    disabledBackgroundColor: Colors.grey,
-                  ),
-                  child: _isLoading
-                      ? const SizedBox(
-                          height: 24,
-                          width: 24,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              Colors.white,
-                            ),
-                          ),
-                        )
-                      : const Text(
-                          'Post',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                ),
-              ),
             ],
           ),
         ),
