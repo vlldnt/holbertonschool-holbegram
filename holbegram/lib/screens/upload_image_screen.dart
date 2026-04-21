@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../methods/auth_method.dart';
+import 'login_screen.dart';
 
 class AddPicture extends StatefulWidget {
   final String email;
@@ -139,9 +140,21 @@ class _AddPictureState extends State<AddPicture> {
                       password: widget.password,
                       file: _image,
                     );
-                    if (mounted) {
+                    if (!mounted) return;
+
+                    if (result == 'success') {
+                      // ignore: use_build_context_synchronously
+                      Navigator.of(context).pushReplacementNamed(
+                        '/login',
+                        arguments: {
+                          'email': widget.email,
+                          'password': widget.password,
+                        },
+                      );
+                    } else {
+                      // ignore: use_build_context_synchronously
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(result == 'success' ? 'Sign up successful' : result)),
+                        SnackBar(content: Text(result)),
                       );
                     }
                   },

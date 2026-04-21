@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../widgets/text_field.dart';
 import '../methods/auth_method.dart';
+import '../providers/user_provider.dart';
 import 'signup_screen.dart';
+import 'home.dart';
 
 class LoginScreen extends StatefulWidget {
   final TextEditingController emailController;
@@ -101,10 +104,27 @@ class _LoginScreenState extends State<LoginScreen> {
                             email: widget.emailController.text,
                             password: widget.passwordController.text,
                           );
-                          if (mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(result == 'success' ? 'Login' : result)),
-                            );
+
+                          if (!mounted) return;
+
+                          final ctx = context;
+                          if (result == 'success') {
+                            if (mounted) {
+                              // ignore: use_build_context_synchronously
+                              final userProvider = Provider.of<UserProvider>(ctx, listen: false);
+                              await userProvider.refreshUser();
+                              if (mounted) {
+                                // ignore: use_build_context_synchronously
+                                Navigator.of(ctx).pushReplacementNamed('/home');
+                              }
+                            }
+                          } else {
+                            if (mounted) {
+                              // ignore: use_build_context_synchronously
+                              ScaffoldMessenger.of(ctx).showSnackBar(
+                                SnackBar(content: Text(result)),
+                              );
+                            }
                           }
                         },
                         child: Text(
