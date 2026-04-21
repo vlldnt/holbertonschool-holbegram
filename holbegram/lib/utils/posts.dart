@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../models/post.dart';
 import '../providers/user_provider.dart';
 import '../screens/pages/methods/post_storage.dart';
+import '../screens/pages/methods/favorites_service.dart';
 
 class Posts extends StatefulWidget {
   const Posts({super.key});
@@ -14,29 +15,43 @@ class Posts extends StatefulWidget {
 }
 
 class _PostsState extends State<Posts> {
+  final FavoritesService _favoritesService = FavoritesService();
+  late Stream<List<String>> _favoritesStream;
+
+  @override
+  void initState() {
+    super.initState();
+    _favoritesStream = _favoritesService.getUserFavorites();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection('posts').orderBy('datePublished', descending: true).snapshots(),
-      builder: (context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-        if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
-        }
+    return StreamBuilder<List<String>>(
+      stream: _favoritesStream,
+      builder: (context, favoritesSnapshot) {
+        return StreamBuilder(
+          stream: FirebaseFirestore.instance.collection('posts').orderBy('datePublished', descending: true).snapshots(),
+          builder: (context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+            if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            }
 
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return const Center(child: Text('No posts'));
-        }
+            if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+              return const Center(child: Text('No posts'));
+            }
 
-        final data = snapshot.data!.docs;
+            final data = snapshot.data!.docs;
+            final savedPostIds = favoritesSnapshot.data ?? [];
 
-        return ListView.builder(
-          itemCount: data.length,
-          itemBuilder: (context, index) {
-            final post = Post.fromSnap(data[index]);
+            return ListView.builder(
+              itemCount: data.length,
+              itemBuilder: (context, index) {
+                final post = Post.fromSnap(data[index]);
+                final isSaved = savedPostIds.contains(post.postId);
 
             return Column(
               children: [
@@ -139,8 +154,18 @@ class _PostsState extends State<Posts> {
                           ),
                           const Spacer(),
                           IconButton(
-                            icon: const Icon(FontAwesomeIcons.bookmark, size: 20),
-                            onPressed: () {},
+                            icon: Icon(
+                              isSaved ? FontAwesomeIcons.solidBookmark : FontAwesomeIcons.bookmark,
+                              size: 20,
+                              color: isSaved ? Colors.blue : Colors.black,
+                            ),
+                            onPressed: () async {
+                              if (isSaved) {
+                                await _favoritesService.unsavePost(post.postId);
+                              } else {
+                                await _favoritesService.savePost(post.postId);
+                              }
+                            },
                           ),
                         ],
                       ),
@@ -160,6 +185,8 @@ class _PostsState extends State<Posts> {
                 ),
                 const Divider(height: 0),
               ],
+            );
+              },
             );
           },
         );

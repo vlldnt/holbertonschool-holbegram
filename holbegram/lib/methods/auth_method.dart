@@ -80,4 +80,8 @@ class AuthMethode {
       return null;
     }
   }
+
+  Future<void> logOut() async {
+    await _auth.signOut();
+  }
 }
