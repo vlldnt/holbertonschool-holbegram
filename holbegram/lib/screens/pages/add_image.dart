@@ -196,18 +196,20 @@ class _AddImageState extends State<AddImage> {
                   children: [
                     ElevatedButton.icon(
                       onPressed: selectImageFromGallery,
-                      icon: const Icon(FontAwesomeIcons.images),
-                      label: const Text('Gallery'),
+                      icon: const Icon(FontAwesomeIcons.images, color: Colors.white),
+                      label: const Text('Gallery', style: TextStyle(color: Colors.white)),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                       ),
                     ),
                     ElevatedButton.icon(
                       onPressed: selectImageFromCamera,
-                      icon: const Icon(FontAwesomeIcons.camera),
-                      label: const Text('Camera'),
+                      icon: const Icon(FontAwesomeIcons.camera, color: Colors.white),
+                      label: const Text('Camera', style: TextStyle(color: Colors.white)),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                       ),
                     ),
                   ],
@@ -227,8 +229,8 @@ class _AddImageState extends State<AddImage> {
                         onTap: selectImageFromGallery,
                         child: Image.asset(
                           'assets/images/addimage.png',
-                          width: 160,
-                          height: 160,
+                          width: 210,
+                          height: 210,
                         ),
                       ),
                       const SizedBox(height: 24),
@@ -237,18 +239,20 @@ class _AddImageState extends State<AddImage> {
                         children: [
                           ElevatedButton.icon(
                             onPressed: selectImageFromGallery,
-                            icon: const Icon(FontAwesomeIcons.images),
-                            label: const Text('Gallery'),
+                            icon: const Icon(FontAwesomeIcons.images, color: Colors.white),
+                            label: const Text('Gallery', style: TextStyle(color: Colors.white)),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.red,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                             ),
                           ),
                           ElevatedButton.icon(
                             onPressed: selectImageFromCamera,
-                            icon: const Icon(FontAwesomeIcons.camera),
-                            label: const Text('Camera'),
+                            icon: const Icon(FontAwesomeIcons.camera, color: Colors.white),
+                            label: const Text('Camera', style: TextStyle(color: Colors.white)),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.red,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                             ),
                           ),
                         ],
