@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:holbegram/screens/signup_screen.dart';
@@ -17,21 +18,29 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final emailController = TextEditingController();
-    final passwordController = TextEditingController();
-    final passwordConfirmController = TextEditingController();
-    final usernameController = TextEditingController();
-
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
       ],
       child: MaterialApp(
-        home: Signup(
-          emailController: emailController,
-          usernameController: usernameController,
-          passwordController: passwordController,
-          passwordConfirmController: passwordConfirmController,
+        home: StreamBuilder<User?>(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              );
+            }
+            if (snapshot.hasData && snapshot.data != null) {
+              return const Home();
+            }
+            return Signup(
+              emailController: TextEditingController(),
+              usernameController: TextEditingController(),
+              passwordController: TextEditingController(),
+              passwordConfirmController: TextEditingController(),
+            );
+          },
         ),
         routes: {
           '/home': (context) => const Home(),

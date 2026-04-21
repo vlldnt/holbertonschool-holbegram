@@ -44,7 +44,12 @@ class _BottomNavState extends State<BottomNav> {
         controller: _pageController,
         physics: const NeverScrollableScrollPhysics(),
         children: [
-          Feed(pageController: _pageController),
+          Feed(onAddTapped: () {
+            setState(() {
+              _currentIndex = 2;
+            });
+            _pageController.jumpToPage(2);
+          }),
           const Search(),
           const AddImage(),
           const Favorite(),

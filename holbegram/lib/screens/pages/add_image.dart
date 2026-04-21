@@ -52,7 +52,9 @@ class _AddImageState extends State<AddImage> {
   }
 
   Future<void> uploadPost() async {
+    print('Post button clicked');
     if (_image == null) {
+      print('No image selected');
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please select an image')),
       );
@@ -60,18 +62,21 @@ class _AddImageState extends State<AddImage> {
     }
 
     if (_captionController.text.isEmpty) {
+      print('No caption');
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please add a caption')),
       );
       return;
     }
 
+    print('Starting upload...');
     setState(() {
       _isLoading = true;
     });
 
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final user = userProvider.user;
+    print('User: ${user.username}');
 
     final result = await PostStorage().uploadPost(
       caption: _captionController.text,
@@ -81,6 +86,8 @@ class _AddImageState extends State<AddImage> {
       image: _image!,
     );
 
+    print('Upload result: $result');
+
     if (!mounted) return;
 
     setState(() {
@@ -88,6 +95,7 @@ class _AddImageState extends State<AddImage> {
     });
 
     if (result == 'Ok') {
+      print('Post uploaded successfully');
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Post uploaded successfully')),
       );
@@ -95,8 +103,9 @@ class _AddImageState extends State<AddImage> {
       setState(() {
         _image = null;
       });
-      Navigator.of(context).pop();
+      Navigator.of(context).pushReplacementNamed('/home');
     } else {
+      print('Error uploading: $result');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error: $result')),
       );
